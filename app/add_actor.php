@@ -14,7 +14,7 @@ require_once 'includes/header.php';
 <body class="container">
     <main class="row">
         <h1 class="fs-1 text-center text-uppercase my-3 fw-bolder">Add actor</h1>
-        <form action="" method="post">
+        <form action="traitement/traitement_add_actor.php" method="post">
             <div>
                 <label class="form-label fs-2 my-3" for="firstname">Firstname</label>
                 <label class="w-100">
@@ -31,6 +31,11 @@ require_once 'includes/header.php';
                 <button class="fs-3 btn btn-primary" type="submit">Add actor</button>
             </div>
         </form>
+        <div class="text-center bg-warning rounded-3">
+            <?php if(isset($errors) ?? isset($catch) ?? '') : ;?>
+                <p class="fs-2"><?= $errors['initial'] ?? $catch['failed'] ?? $catch['success'] ?? '';?></p>
+            <?php endif;?>
+        </div>
     </main>
 </body>
 </html>
