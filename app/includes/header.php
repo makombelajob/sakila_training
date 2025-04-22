@@ -1,25 +1,4 @@
-<?php
-global $pdo;
-require_once 'connect.php';
-$errors = [];
-$id= $_GET['id'];
-if(!is_numeric($id)){
-    $errors['failedSearch'] = 'failed to search';
-}else{
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        $search = htmlspecialchars(trim($_POST['searchFilm']));
-        if(empty($search)){
-            $errors['input'] = 'You must fill before searching';
-        }else{
-            $sql = 'SELECT film_id, title, description, release_year FROM film WHERE id = :id_user;';
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':id_user',$id, PDO::PARAM_INT);
-            $film = $stmt->execute();
-            var_dump($film);
-        }
-    }
-}
-?>
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -35,12 +14,20 @@ if(!is_numeric($id)){
 <header class="container p-3 mb-4">
     <nav class="row mb-5">
         <h2 class="col text-uppercase text-danger fs-1">Sakila</h2>
+        <div class="col-12">
+            <ul class="d-flex justify-content-between list-unstyled">
+                <li class=""><a class="text-decoration-none fs-4 text-secondary" href="../index.php">home</a></li>
+                <li class=""><a class="text-decoration-none fs-4 text-secondary" href="../add_film.php">add film</a></li>
+                <li class=""><a class="text-decoration-none fs-4 text-secondary" href="../add_actor.php">add actor</a></li>
+            </ul>
+        </div>
         <form class="col-8 m-auto" action="" method="post" >
             <div class="row ">
                 <label class="col-2 fs-4" for="category">Choose</label>
                 <select class="col-9" name="categories" id="category">
                     <option value="">All</option>
                     <option value="one_by_one">One by one</option>
+                    <option value="add_film">Add film</option>
                 </select>
             </div>
         </form>
@@ -55,7 +42,7 @@ if(!is_numeric($id)){
             </div>
             <form class="row" action="" method="post">
                 <label class="w-75 m-auto col-10">
-                    <input name="searchFilm" class="form-control fs-5" type="text" placeholder="Search for a film" value="<?php if(isset($errors) ?? $errors['input'] ?? '') : ;?><?= $errors['input'] ?? '' ?><?php endif;?>"
+                    <input name="searchFilm" class="form-control fs-5" type="text" placeholder="Search for a film" value=""
                     />
                 </label>
                 <div class="col-2">
